@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <iomanip>
 
 template <typename T>
 T sumForward(unsigned n) {
@@ -21,6 +22,7 @@ T sumBackward(unsigned n) {
 }
 
 int main() {
+    
     std::cout << "Pojedyncza precyzja\nW przod" << std::endl;
     std::cout << "n = 50 " << sumForward<float>(50) << std::endl;
     std::cout << "n = 100 " << sumForward<float>(100) << std::endl;

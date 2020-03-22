@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <limits>
 
 int main() {
   float epsilon = 1.0f;
@@ -8,4 +9,7 @@ int main() {
   }
 
   std::cout << epsilon << std::endl;
+  std::cout << ((1.0f + epsilon) == 1) << std::endl;
+  std::cout << ((1.0f + epsilon * 0.5f) == 1) << std::endl;
+  
 }

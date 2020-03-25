@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 template <typename T> class AGHMatrix 
 {
@@ -30,12 +31,21 @@ public:
     // Printing matrix
     std::ostream& operator<<(const AGHMatrix<T>& matrix);
 
+    std::pair<AGHMatrix<T>, AGHMatrix<T>> LU();
+    AGHMatrix<T> Cholesky();
+
+    AGHMatrix<T> transpose();
+
+    std::vector<T> Jacobi(int);
     // Access the row and column sizes                                                                                                                                                                                              
     unsigned get_rows() const;
     unsigned get_cols() const;
-   bool isSymetric();
-   T wyznacznik();
+    bool isSymetric();
+    T det();
 
 };
+
+template <typename T>
+T _det(int cols, int rows, std::vector<std::vector<T>> matrix);
 
 #include "aghMatrix.cpp"

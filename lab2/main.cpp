@@ -9,7 +9,7 @@ int main()
     AGHMatrix<double> mat1(5, 5, 1.2);
     AGHMatrix<double> mat2(5, 5, 2.8);
 
-    // Uncomment when implemented
+     //Uncomment when implemented
      AGHMatrix<double> mat3 = mat1 * mat2;
      std::cout << mat3;
 
@@ -27,12 +27,12 @@ int main()
                                              }; 
      std::vector<std::vector<double>> init4 { { 4, 12, -16 }, 
                                              { 12, 37, -43 },
-                                             { -16, -43, 98 }
+                                             {1, 32, 1}
                                              }; 
+    AGHMatrix<double> mat7(init4);
     AGHMatrix<double> mat4(init1);
     AGHMatrix<double> mat5(init2);
     AGHMatrix<double> mat6(init3);
-    AGHMatrix<double> mat7(init4);
     AGHMatrix<double> mat8(init1);
     std::cout << mat4 << std::endl;
     std::cout << mat5 << std::endl;

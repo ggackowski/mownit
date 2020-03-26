@@ -1,5 +1,5 @@
 #include "aghMatrix.h"
-
+#include <unistd.h>
 
 // Parameter Constructor                                                                                                                                                      
 template<typename T>
@@ -235,6 +235,17 @@ std::vector<T> AGHMatrix<T>::Jacobi(int iterations) {
 template <typename T>
 AGHMatrix<T> AGHMatrix<T>::gauss() {
   AGHMatrix<T> newmatrix(*this);
+  //std::cout << rows << " " << cols << std::endl;
+  //sleep(1);
+  for (int k = 0; k < std::min(cols - 1, rows - 1); ++k) {
+    T pivot = newmatrix.matrix[k][k];
+    for (int i = k + 1; i < rows; ++i) {
+      T factor = newmatrix.matrix[i][k] / pivot;
+      for (int j = 0; j < cols; ++j) {
+        newmatrix.matrix[i][j] -= factor * newmatrix.matrix[k][j];
+      }
+    }
+  }
   return newmatrix;
 }
 

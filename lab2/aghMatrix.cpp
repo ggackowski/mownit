@@ -233,6 +233,12 @@ std::vector<T> AGHMatrix<T>::Jacobi(int iterations) {
 }
 
 template <typename T>
+AGHMatrix<T> AGHMatrix<T>::gauss() {
+  AGHMatrix<T> newmatrix(*this);
+  return newmatrix;
+}
+
+template <typename T>
 AGHMatrix<T> AGHMatrix<T>::Cholesky() {
   AGHMatrix<T> L(rows, cols, 0);
 

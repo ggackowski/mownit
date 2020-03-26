@@ -41,6 +41,7 @@ public:
     unsigned get_rows() const;
     unsigned get_cols() const;
     bool isSymetric();
+    AGHMatrix<T> gauss();
     T det();
 
 };

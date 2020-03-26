@@ -46,5 +46,6 @@ int main()
     auto res = mat8.Jacobi(500);
     for (int i = 0; i < res.size(); ++i)
       std::cout << "x[" << i << "] = " << res[i] << std::endl; 
+    std::cout << mat7.gauss();
     return 0;
 }

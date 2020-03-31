@@ -63,7 +63,7 @@ int main() {
 
     f = f3;
    // std::cout << f(1) << " " << f(2) << std::endl;
-    r = bisection(1, 3, 0.1); //brak m zerowego
+    r = bisection(1, 3, 1e-33); //-7: 23  -15: 48  -33: 53
     std::cout << r.first << " " << r.second << std::endl;
 
 

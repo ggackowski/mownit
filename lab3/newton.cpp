@@ -25,7 +25,7 @@ double dist(double a, double b) {
     return std::abs(a - b);
 }
 
-double newton(int it, double epsilon) {
+std::pair<int, double> newton(int it, double epsilon) {
     double x = 1;
     int i = 0;
     double xn = INT_MAX;
@@ -36,16 +36,19 @@ double newton(int it, double epsilon) {
         
 
     } while (i < it && dist(xn, x) >= epsilon);
-    return x;
+    if (i == it) 
+        return std::make_pair(i, -1);
+    return std::make_pair(i, x);
 }
 
 int main() {
     f = f1;
-    std::cout << newton(10, 1e-7) << std::endl;
+    auto res = newton(10, 1e-7);
+    std::cout << res.first << " " << res.second << std::endl;
     f = f2;
-    std::cout << newton(10, 1e-7) << std::endl;
+    res = newton(10, 1e-7);
+    std::cout << res.first << " " << res.second << std::endl;
     f = f3;
-    std::cout << newton(10, 1e-7) << std::endl;
-
-
+    res = newton(10, 1e-7);
+    std::cout << res.first << " " << res.second << std::endl;
 }

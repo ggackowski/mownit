@@ -20,40 +20,49 @@ double dist(double a, double b) {
 }
 
 double (*f) (double);
+double a;
+double b;
 
 std::pair<int, double> secant(int it, double epsilon) {
-    double x0 = 0.3;
-    double x1 = 1;
+    double x0 = a;
+    double x1 = b;
     int i = 0;
     do {
-        double x = (f(x1) * x0 - f(x0) * x1) / (f(x1) - f(x0));
-        x0 = x1;
-        x1 = x;
+        double x = x1;
+        x1 = (f(x1) * x0 - f(x0) * x1) / (f(x1) - f(x0));
+        x0 = x;
+        ++i;
     } while (i < it && dist(x1, x0) >= epsilon);
 
     return std::make_pair(i, x1);
 }
-/*
-        xn = x;
-        b1 = b;
-        x = (f(a) * b - f(b) * a) / (f(a) - f(b1));
-        std::cout << "b tutaj ejst: " << b << std::endl;
-        std::cout << x << " | " << xn << std::endl;
+
+std::pair<double, unsigned> secantMethod(double (*f)(double), double a, double b, double eps, int maxIter){
+    double xn0 = a;
+    double xn1 = b;
+
+    unsigned i = 0;
+
+    while(abs(f(xn1)) > eps && i < maxIter){
+        // std::cout << "f(x) = " << f(x) << " f'(x) = " << derivative(f,x,1e-10) << std::endl;
+        double temp = xn1;
+        xn1 = (f(xn1) * xn0 - f(xn0) * xn1) / (f(xn1) - f(xn0));
+        xn0 = temp;
+
+        if(xn0 == xn1){
+            throw("Zbyt maly epsilon!\n");
+        }
         i++;
-        std::cout << "a: " << a << " b: " << b << std::endl;
-        std::cout << "f(x) " << f(x) << std::endl; 
-        if (f(x) * f(a) > 0) {
-            a = x;
-        }
-        if (f(x) * f(b) > 0) {
-            b = x;
-        }
-        std::cout << "at: " << a << " bt: " << b << std::endl;
-       */
+    }
+    return std::make_pair(xn1, i);
+}
 
 int main() {
     f = f2;
-    auto res = secant(100, 0.1);
+    a = 0;
+    b = M_PI / 2;
+    auto res = secantMethod(f, a, b, 0.1, 100);
+   // auto res = secant(100, 0.1);
     std::cout << res.first << " " << res.second << "\n";
 
 }

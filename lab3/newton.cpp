@@ -24,9 +24,11 @@ double df(double x) {
 double dist(double a, double b) {
     return std::abs(a - b);
 }
+double a;
+double b;
 
 std::pair<int, double> newton(int it, double epsilon) {
-    double x = 1;
+    double x = (a + b) / 2;
     int i = 0;
     double xn = INT_MAX;
     do {
@@ -43,12 +45,18 @@ std::pair<int, double> newton(int it, double epsilon) {
 
 int main() {
     f = f1;
-    auto res = newton(10, 1e-7);
+    a = 3 / 2 * M_PI;
+    b = 2 * M_PI;
+    auto res = newton(100, 1e-33);
     std::cout << res.first << " " << res.second << std::endl;
     f = f2;
-    res = newton(10, 1e-7);
+    a = 0;
+    b = M_PI / 2;
+    res = newton(100, 1e-33);
     std::cout << res.first << " " << res.second << std::endl;
     f = f3;
-    res = newton(10, 1e-7);
+    a = 1;
+    b = 3;
+    res = newton(100, 1e-33);
     std::cout << res.first << " " << res.second << std::endl;
 }

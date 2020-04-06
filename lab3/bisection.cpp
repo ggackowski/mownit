@@ -50,15 +50,15 @@ std::pair<double, int> bisection(double begin, double end, double epsilon) {
 int main() {
     
     f = f1;
-    auto r = bisection((3 / 2) * M_PI, 2 * M_PI, 1e-13); //brak m zerowego
+    auto r = bisection((3 / 2) * M_PI, 2 * M_PI, 1e-13); 
     std::cout << r.first << " " << r.second << std::endl;
 
     f = f2;
-    r = bisection(0, M_PI / 2, 1e-33); //-7: 25   -15: 52   -33: 53
+    r = bisection(0, M_PI / 2, 1e-33); 
     std::cout << r.first << " " << r.second << std::endl;
 
     f = f3;
-    r = bisection(1, 3, 1e-33); //-7: 23  -15: 48  -33: 53
+    r = bisection(1, 3, 1e-33); 
     std::cout << r.first << " " << r.second << std::endl;
 
 

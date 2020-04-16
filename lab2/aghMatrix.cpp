@@ -115,9 +115,7 @@ AGHMatrix<T> AGHMatrix<T>::operator+(const AGHMatrix<T>& rhs)
 template<typename T>
 AGHMatrix<T> AGHMatrix<T>::operator*(const AGHMatrix<T>& rhs) 
 {
-  // Task 1 - implement multiplication of two matrices
    AGHMatrix<T> newMatrix(this->rows, rhs.cols, 0);
-   //std::cout << this->matrix.size() << "s" << this->cols;// i: 0 1, j: 0 1 2 
   
     for (auto i = 0; i < this->matrix.size(); ++i)
         for (auto j = 0; j < this->matrix[i].size(); ++j) 
@@ -176,35 +174,20 @@ std::pair<AGHMatrix<T>, AGHMatrix<T>> AGHMatrix<T>::LU() {
 
   for (int i = 0; i < cols; ++i) {
     for (int j = i; j < rows; ++j) {
-
       T sum1 = 0;
-
       U.matrix[i][j] = matrix[i][j];
-
-
       for (int k = 0; k <= i - 1; ++k)
         sum1 += L.matrix[i][k] * U.matrix[k][j];
-
-      //std::cout << sum1;
-
       U.matrix[i][j] -= sum1;
-     // std::cout << "U wiersz nr " << i << ": " << j << ":: " << U.matrix[i][j] << std::endl;
     }
     for (int j = i + 1; j < rows; ++j) {
-
         T sum2 = 0;
         L.matrix[j][i] = 1.0 / U.matrix[i][i];
-        //std::cout << L.matrix[j][i];
-
         for (int k = 0; k <= i - 1; ++k)
             sum2 += L.matrix[j][k] * U.matrix[k][i];
-     // std::cout << sum2;
-      
         L.matrix[j][i] *= (matrix[j][i] - sum2);
-      //std::cout << "L kolumna nr " << i << ": " << j << ":: " << L.matrix[j][i] << std::endl;
     }
   }
-
   return std::make_pair(L, U);
 }
 
@@ -213,20 +196,17 @@ std::vector<T> AGHMatrix<T>::Jacobi(int iterations) {
   std::vector<T> res(rows);
   std::vector<T> res_old(rows);
   for (int i = 0; i < rows; ++i) {
-    res_old[i] = 0;
+    res[i] = 0;
   }
-
   for (int it = 0; it < iterations; ++it) {
-    for (int i = 0; i < rows; ++i) {
+    for (int w = 0; w < rows; ++w) {
       T sum = 0;
-      for (int i = 0; i < rows; ++i)
-        for (int j = 0; j < rows; ++j)
-          if (i != j) {
-            sum += matrix[i][j] * res_old[j];
-          }
-      res_old[i] = res[i];
-      res[i] = (1.0 / matrix[i][i]) * (matrix[i][cols - 1] - sum);
-
+      res_old[w] = res[w];
+      for (int j = 0; j < rows; ++j) 
+        if (w != j) {
+          sum += matrix[w][j] * res_old[j];
+        }
+      res[w] = (matrix[w][cols - 1] - sum) / matrix[w][w];
     }
   }
   return res;
@@ -235,10 +215,9 @@ std::vector<T> AGHMatrix<T>::Jacobi(int iterations) {
 template <typename T>
 AGHMatrix<T> AGHMatrix<T>::gauss() {
   AGHMatrix<T> newmatrix(*this);
-  //std::cout << rows << " " << cols << std::endl;
-  //sleep(1);
-  for (int k = 0; k < std::min(cols - 1, rows - 1); ++k) {
+  for (int k = 0; k < rows - 1; ++k) {
     T pivot = newmatrix.matrix[k][k];
+    
     for (int i = k + 1; i < rows; ++i) {
       T factor = newmatrix.matrix[i][k] / pivot;
       for (int j = 0; j < cols; ++j) {
@@ -255,17 +234,19 @@ AGHMatrix<T> AGHMatrix<T>::Cholesky() {
 
 for (int i = 0; i < rows; ++i) {
   for (int j = i; j < cols; ++j) {
+
     if (i != j) {
       T sum = 0;
-      for (int k = 0; k <= i - 1; ++k) 
+      for (int k = 0; k < i; ++k) 
         sum += L.matrix[j][k] * L.matrix[i][k];
     
-    L.matrix[j][i] = (matrix[j][i] - sum) / L.matrix[i][i];
+      L.matrix[j][i] = (matrix[j][i] - sum) / L.matrix[i][i];
     }
+
     else {
       T sum = 0;
     
-      for (int k = 0; k <= i - 1; k++)
+      for (int k = 0; k < i; k++)
         sum += L.matrix[i][k] * L.matrix[i][k];
 
       L.matrix[i][i] = std::sqrt(matrix[i][i] - sum);
@@ -278,39 +259,23 @@ return L;
 template  <typename T>
 T _det(int rows, int cols, std::vector<std::vector<T>> matrix) {
   T det = 0;
-
   if (rows == 1) return matrix[0][0];
   else {
     for (int i = 0; i < rows; ++i) {
-        //std::cout << "NIE SMIEJ WIECEJ NIZ 3\n";
         std::vector<std::vector<T>> tmp;
-        
           for (int k = 0; k < rows; ++k) {
             if (k != i)
               tmp.push_back(std::vector<T>());
             for (int l = 0; l < cols; ++l) {
               if (k != i && l != 0) {
-                //std::cout << "k: " << k << "l: " << l << std::endl;
-                //fflush(stdout);
                 tmp[tmp.size() - 1].push_back(matrix[k][l]);
               }
             }
           }
-          //  std::cout << "wypisanie" << std::endl;
-          //for (int k = 0; k < tmp.size(); ++k) {
-          //  for (int l = 0; l < tmp[k].size(); ++l) 
-          //    std::cout << tmp[k][l];
-          //  std::cout << std::endl;
-          //}
-        //std::cout << "po W Y P I SA NIEU\n";
-       //fflush(stdout);
-       //std::cout << "rows: " << rows << std::endl;
        if (i % 2 == 0)
         det +=  matrix[i][0] * _det(rows - 1, cols - 1, tmp);
       else
         det -=  matrix[i][0] * _det(rows - 1, cols - 1, tmp);
-       
-      
     }
     return det;
   }

@@ -17,20 +17,17 @@ std::vector<std::pair<double, double>> Interpolation::createPoints
           case PointsMode::Normal:
           { 
             double delta = (end - begin) / n;
-            
             for (int i = 0; i < n + 1; ++i) 
               result.push_back(std::make_pair(begin + i * delta, f(begin + i * delta)));
-            
             break;
           }
           case PointsMode::Chebyshev:
           {
-              for (int i = 0; i < n + 1; ++i) {
+            for (int i = 0; i < n + 1; ++i) {
               double value = std::cos(   (2. * i + 1) / (n + 1.) * M_PI / 2.   );
               double denormalizedValue = (end - begin) / 2 * value + (begin + end) / 2;
               result.push_back(std::make_pair(denormalizedValue, f(denormalizedValue)));
             }
-
             break;
           }
         }
@@ -51,4 +48,15 @@ std::vector<std::pair<double, double>> Interpolation::getPlotData(double begin, 
         for (int i = 0; i < n; ++i) 
           result.push_back(std::make_pair(begin + i * delta, polyValue(begin + i * delta)));
         return result;
+}
+
+double Interpolation::maxDifference(double (*f) (double), double b, double e) {
+  double diff = 0;
+  int cnt = 0;
+  for (double i = b; i <= e; i += 0.015625) {
+    cnt++;
+    double dist = std::abs(f(i) - polyValue(i));
+    diff += dist;
+  }
+  return diff / cnt;
 }

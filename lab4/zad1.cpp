@@ -23,20 +23,22 @@ int main() {
   f.open("dataL.txt", std::ios::out);
   g.open("dataN.txt", std::ios::out);
 
+  double begin = -4.;
+  double end = 4.;
+  double points = 24;
+  auto type = Interpolation::PointsMode::Normal;
 
-  Newton * newton = new Newton(Newton::createPoints(f2, -4.0, 4.0, 10, Newton::PointsMode::Chebyshev), f2);
-  //std::cout << std::endl << newton->polyValue(4);
-  Newton::fileWrite(g, newton->getPlotData(-4, 4, 500) );
+  //Interpolation * interpolation1 = new Newton(Interpolation::createPoints(f2, begin, end, points, type), f2);
+  //Interpolation::fileWrite(g, interpolation1->getPlotData(begin,  end, 500) );
 
-  Lagrange * lagrange = new Lagrange(Lagrange::createPoints(f2, -4.0, 4.0, 10, Lagrange::PointsMode::Chebyshev));
-  //std::cout << lagrange->polyValue(4);
-  Lagrange::fileWrite(f, lagrange->getPlotData(-4, 4, 500) );
+  Interpolation * interpolation2 = new Lagrange(Interpolation::createPoints(f2, begin, end, points, type));
+  Interpolation::fileWrite(f, interpolation2->getPlotData(begin, end, 500) );
 
-
-  
-  
-  
-
+  std::cout << "blad: " << interpolation2->maxDifference(f2, -4., 4.) << std::endl;
+  //for (int i = 2; i <= 40; ++i) {
+  //  Interpolation * interpolation2 = new Lagrange(Interpolation::createPoints(f2, begin, end, i, type));
+  //  std::cout << interpolation2->maxDifference(f2, begin, end) << std::endl;
+  //}
 }
 
 

@@ -15,12 +15,12 @@ public:
   Newton(std::vector<std::pair<double, double>>, double (*) (double));
   
   double polyValue(double);
-double dividedDiff(std::vector<double>);
+
 
 private:
 
   double (*f) (double);
-
+  double dividedDiff(std::vector<std::pair<double, double>>);
   
 
 };

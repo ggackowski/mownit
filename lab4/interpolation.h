@@ -4,8 +4,7 @@
 #ifndef _INTERPOLATION_H_
 #define _INTERPOLATION_H_
 
-class Interpolation {
-  
+class Interpolation { 
 
 public:
 
@@ -23,7 +22,9 @@ public:
   std::vector<std::pair<double, double>> getPlotData(double, double, int);
   
   virtual double polyValue(double) = 0;
-  
+
+  double maxDifference(double (*f) (double), double b, double e);
+
 
 protected:
 

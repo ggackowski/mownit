@@ -3,49 +3,83 @@
 #include <iostream>
 
 
+const double k = 1;
+const double m = 2;
+
+double f1(double x) {
+    return std::sin(k * x / M_PI) * exp(-m * x / M_PI);
+}
+
+double f2(double x) {
+    return std::exp(k * cos(m * x));
+}
+
+double f3(double x) {
+    return std::sin(m * x) * std::exp(-m * x / M_PI);
+}
+
+double f4(double x) {
+    return x * x - m * cos(M_PI * x / k);
+}
+
+double random_n() {
+    return rand() / double(RAND_MAX);
+}
+
+std::vector<std::pair<double, double>>
+    getRandomPoints(double begin, double end, double (*f) (double), int n) {
+        std::vector<std::pair<double, double>> points;
+        for (int i = 0; i < n; ++i) {
+            double val = random_n() * (end - begin) + begin;
+            points.push_back(std::make_pair(val, f(val)));
+        }
+        return points;
+    }
+
+std::vector<std::vector<double>> 
+    generateMatrix(std::vector<std::pair<double, double>> points, int m) {
+        int n = points.size();
+        std::vector<std::vector<double>> matrix(m + 1);
+        for (int i = 0; i <= m; ++i) {
+
+            for (int k = 0; k <= m; ++k) {
+                double s = 0;
+                for (int j = 0; j < n; ++j) 
+                    s += std::pow(points[j].first, k + i);
+
+                matrix[i].push_back(s);
+            }
+
+            double s = 0;
+            for (int j = 0; j < n; ++j) 
+                s += points[j].second * std::pow(points[j].first, i);
+
+            matrix[i].push_back(s);
+        }      
+        return matrix;
+    
+}
+
 int main() 
 {
-    // initialize matrices using init value
-    AGHMatrix<double> mat1(5, 5, 1.2);
-    AGHMatrix<double> mat2(5, 5, 2.8);
 
-     //Uncomment when implemented
-     AGHMatrix<double> mat3 = mat1 * mat2;
-     std::cout << mat3;
+    int begin = 1;
+    int end = 6;
+    int pts_size = 10;
+    double (*f) (double) = f4;
+    auto pts = getRandomPoints(begin, end, f, pts_size);
+    
+    for (int i = 0; i < pts.size(); ++i) {
+        std::cout << pts[i].first << " " << pts[i].second << std::endl;
+    }
 
-   //  initialize matrix using specified values
-    std::vector<std::vector<double>> init1 { { 1.0, 1.0, 1.0 }, 
-                                            { 1.0, 1.0, 1.0 } 
-                                             }; 
+    auto matrix = generateMatrix(pts, 6);
 
-    std::vector<std::vector<double>> init2 { { 1.0, 1.0 }, 
-                                            { 1, 1.0},
-                                             {1, 1}}; 
-    std::vector<std::vector<double>> init3 { { 5, 3, 2 }, 
-                                             { 1, 2, 0 },
-                                             { 3, 0, 4 }
-                                             }; 
-     std::vector<std::vector<double>> init4 { { 4, 12, -16 }, 
-                                             { 12, 37, -43 },
-                                             {1, 32, 1}
-                                             }; 
-    AGHMatrix<double> mat7(init4);
-    AGHMatrix<double> mat4(init1);
-    AGHMatrix<double> mat5(init2);
-    AGHMatrix<double> mat6(init3);
-    AGHMatrix<double> mat8(init1);
-    std::cout << mat4 << std::endl;
-    std::cout << mat5 << std::endl;
-    std::cout << mat4 * mat5 << std::endl;
-    std::cout << mat6.det();
-    std::cout << mat4.transpose();
-    std::cout << "\n\n";
-    auto lu = mat6.LU();
-    std::cout << lu.first << std::endl << lu.second << std::endl;
-    std::cout << mat7.Cholesky() << std::endl;
-    auto res = mat8.Jacobi(500);
+    AGHMatrix<double> mat8(matrix);
+
+    std::cout << mat8.gauss();
+    auto res = mat8.Jacobi(300);
     for (int i = 0; i < res.size(); ++i)
       std::cout << "x[" << i << "] = " << res[i] << std::endl; 
-    std::cout << mat7.gauss();
     return 0;
 }

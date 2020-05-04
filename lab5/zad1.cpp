@@ -73,24 +73,27 @@ std::vector<std::vector<double>>
 
 std::vector<double> getCoefficiens(std::vector<std::vector<double>> matrix) {
     int n = matrix.size();
-    std::vector<double> coefficients(n, 0);
-    for (int i = 0; i < n - 1; i++)
-        for (int k = i + 1; k < n; k++){
-            double tmp = matrix[k][i] / matrix[i][i];
-            for (int j = 0; j <= n; j++)
-                matrix[k][j] -= tmp * matrix[i][j];
-        }
+    std::vector<double> coef(n, 0);
 
-    for (int i = n - 1; i >= 0; i--){
-        coefficients.at(i) = matrix[i][n];
-        for (int j = 0; j < n; j++)
-            if (j != i)
-                coefficients.at(i) -= matrix[i][j] * coefficients.at(j);
-        coefficients.at(i) /= matrix[i][i];
+    for (int i = 0; i < n - 1; ++i)
+        for (int k = i + 1; k < n; ++k) {
+            double t = matrix[k][i] / matrix[i][i];
+            for (int j = 0; j <= n; ++j)
+                matrix[k][j] -= matrix[i][j] * t;
+        }
+    for (int i = n - 1; i >= 0; --i) {
+        coef[i] = matrix[i][n];
+        for (int j = 0; j < n; ++j) {
+            if (i != j) {
+                coef[i] -=  coef [j] * matrix[i][j];
+			}        
+	}
+	coef[i] /= matrix[i][i];
     }
 
-    return coefficients;
+    return coef;
 }
+
 
 double value(double x, std::vector<double> coeff) {
     double sum = 0;

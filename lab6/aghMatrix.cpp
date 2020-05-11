@@ -201,20 +201,17 @@ std::vector<T> AGHMatrix<T>::Jacobi(int iterations) {
   for (int it = 0; it < iterations; ++it) {
     for (int w = 0; w < rows; ++w) {
       T sum = 0;
-      //res_old[w] = res[w];
       for (int j = 0; j < rows; ++j) 
         if (w != j) {
           sum += matrix[w][j] * res_old[j];
         }
-        //std::cout << "sum: " << sum << std::endl;
       for (int i = 0; i < rows; ++i) res_old[i] = res[i];
       res[w] = T(matrix[w][cols - 1] - sum) / matrix[w][w];
-     // std::cout << cols;
-     // std::cout << matrix[0][3] << std::endl;
     }
   }
   return res;
 }
+
 
 template <typename T>
 std::vector<T> AGHMatrix<T>::GaussSeidel(int iterations) {
